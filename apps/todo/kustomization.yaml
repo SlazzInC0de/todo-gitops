@@ -1,0 +1,20 @@
+# The single source of truth for what runs in the cluster.
+# CI (todo-app/.github/workflows/ci.yaml, job "promote") rewrites
+# newName/newTag on every merge to main. Roll back = git revert here.
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: todo
+labels:
+  - pairs:
+      app.kubernetes.io/part-of: todo
+resources:
+  - configmap.yaml
+  - postgres.yaml
+  - deployment.yaml
+  - service.yaml
+  - servicemonitor.yaml
+  - dashboard.yaml
+images:
+  - name: todo-api
+    newName: ghcr.io/slazzinc0de/todo-api
+    newTag: "replace-me-ci-sets-this"

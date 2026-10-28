@@ -1,0 +1,26 @@
+# The Argo CD Application: "make the todo namespace match apps/todo in Git".
+# Applied once (make gitops in the app repo). After that, Git is the only
+# way to change what runs.
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: todo
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/SlazzInC0de/todo-gitops.git
+    targetRevision: main
+    path: apps/todo
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: todo
+  syncPolicy:
+    automated:
+      prune: true        # delete objects removed from Git
+      selfHeal: true     # undo changes made outside Git (kubectl edit, scale, ...)
+    syncOptions:
+      - CreateNamespace=true
+    retry:
+      limit: 5
+      backoff: { duration: 10s, factor: 2, maxDuration: 3m }

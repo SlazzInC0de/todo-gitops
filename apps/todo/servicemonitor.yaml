@@ -1,0 +1,17 @@
+# Tells Prometheus (installed by OpenTofu) to scrape the app's /metrics.
+# The release label must match the Helm release name "monitoring",
+# otherwise Prometheus silently ignores this object.
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: todo-api
+  labels:
+    release: monitoring
+spec:
+  selector:
+    matchLabels:
+      app: todo-api
+  endpoints:
+    - port: http
+      path: /metrics
+      interval: 15s
