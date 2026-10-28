@@ -17,4 +17,4 @@ resources:
 images:
   - name: todo-api
     newName: ghcr.io/slazzinc0de/todo-api
-    newTag: "89a2518ed164eb35ed9309081a2592a5390c6dbd"
+    newTag: "d7fda52c31330f6e8295587130a95be5b43774eb"
